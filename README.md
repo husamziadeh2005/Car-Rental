@@ -131,6 +131,3 @@ Then open the URL printed in the console (e.g. `https://localhost:5001`).
 
 The app uses ASP.NET Core Identity. Register a new account from the **Register** page to access protected admin actions (create/edit/delete). Browsing vehicles, categories, and the "Our Cars" page is available without logging in.
 
-## 📄 License
-
-This project is licensed under the MIT License — feel free to use it as a learning reference or starting point.
