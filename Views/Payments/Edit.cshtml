@@ -1,0 +1,64 @@
+@model Payment
+
+@{
+    ViewData["Title"] = "Edit Payment";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Edit Payment</h1>
+        <p class="page-subtitle">Payment #@Model.PaymentId</p>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="PaymentId" />
+
+            <div class="form-grid">
+                <div>
+                    <label asp-for="RentalId" class="form-label"></label>
+                    <select asp-for="RentalId" class="form-select" asp-items="ViewBag.Rentals">
+                        <option value="">Select a rental…</option>
+                    </select>
+                    <span asp-validation-for="RentalId" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Amount" class="form-label"></label>
+                    <input asp-for="Amount" class="form-control" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="PaymentDate" class="form-label"></label>
+                    <input asp-for="PaymentDate" class="form-control" />
+                    <span asp-validation-for="PaymentDate" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="PaymentMethod" class="form-label"></label>
+                    <input asp-for="PaymentMethod" class="form-control" />
+                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="PaymentStatus" class="form-label"></label>
+                    <input asp-for="PaymentStatus" class="form-control" />
+                    <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

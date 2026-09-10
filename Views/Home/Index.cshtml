@@ -1,0 +1,178 @@
+﻿@model CarRentalPH.Models.ViewFind.DashboardViewModel
+@using CarRentalPH.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Dashboard</h1>
+        <p class="page-subtitle">Live overview of your fleet, rentals and revenue.</p>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="page-actions">
+            <a asp-controller="Rentals" asp-action="Create" class="btn btn-primary"><span class="icon">➕</span>New Rental</a>
+            <a asp-controller="Vehicles" asp-action="Create" class="btn btn-outline-primary"><span class="icon">🚘</span>Add Vehicle</a>
+        </div>
+    }
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--brand-100); color:var(--brand-600);">🚘</div>
+            <div>
+                <div class="stat-value">@Model.TotalVehicles</div>
+                <div class="stat-label">Total Vehicles</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--success-100); color:var(--success-700);">✅</div>
+            <div>
+                <div class="stat-value">@Model.AvailableVehicles</div>
+                <div class="stat-label">Available Now</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--info-100); color:var(--info-700);">📄</div>
+            <div>
+                <div class="stat-value">@Model.ActiveRentals</div>
+                <div class="stat-label">Active Rentals</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--warning-100); color:var(--warning-700);">💰</div>
+            <div>
+                <div class="stat-value">@Model.TotalRevenue.ToString("C")</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="section-card h-100">
+            <div class="section-card-header">
+                <h2>Recent Rentals</h2>
+                <a asp-controller="Rentals" asp-action="Index" class="btn btn-outline-secondary btn-sm">View all</a>
+            </div>
+            <div class="section-card-body p-0">
+                @if (!Model.RecentRentals.Any())
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">📄</div>
+                        <h5>No rentals yet</h5>
+                        <p class="mb-0">New rentals will show up here as soon as they're created.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Vehicle</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var rental in Model.RecentRentals)
+                                {
+                                    <tr>
+                                        <td>@(rental.Customer != null ? rental.Customer.FirstName + " " + rental.Customer.LastName : "—")</td>
+                                        <td>@(rental.Vehicle != null ? rental.Vehicle.Brand + " " + rental.Vehicle.Model : "—")</td>
+                                        <td>@rental.StartDate.ToString("dd MMM yyyy")</td>
+                                        <td>@rental.EndDate.ToString("dd MMM yyyy")</td>
+                                        <td>@rental.TotalPrice.ToString("C")</td>
+                                        <td><partial name="_RentalStatusBadge" model="rental.Status" /></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="section-card h-100">
+            <div class="section-card-header">
+                <h2>Fleet Status</h2>
+            </div>
+            <div class="section-card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-body-secondary">Available</span>
+                    <span class="badge-status badge-success">@Model.AvailableVehicles</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-body-secondary">Rented</span>
+                    <span class="badge-status badge-info">@Model.RentedVehicles</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="text-body-secondary">Maintenance</span>
+                    <span class="badge-status badge-warning">@Model.MaintenanceVehicles</span>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-body-secondary">Total Customers</span>
+                    <strong>@Model.TotalCustomers</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-body-secondary">Pending Rentals</span>
+                    <strong>@Model.PendingRentals</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-body-secondary">Completed Rentals</span>
+                    <strong>@Model.CompletedRentals</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.CustomersWithActiveRentals.Any())
+{
+    <div class="section-card mt-3">
+        <div class="section-card-header">
+            <h2>Customers With Active Rentals</h2>
+        </div>
+        <div class="section-card-body">
+            <div class="row g-3">
+                @foreach (var customer in Model.CustomersWithActiveRentals)
+                {
+                    var active = customer.Rentals!.Where(r => r.Status == EnumRentalStatus.Active).ToList();
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-2">@customer.FirstName @customer.LastName</h6>
+                                @foreach (var rental in active)
+                                {
+                                    <div class="d-flex justify-content-between small mb-1">
+                                        <span class="text-body-secondary">@(rental.Vehicle != null ? rental.Vehicle.Brand + " " + rental.Vehicle.Model : "Vehicle")</span>
+                                        <span>@rental.StartDate.ToString("dd/MM") – @rental.EndDate.ToString("dd/MM")</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

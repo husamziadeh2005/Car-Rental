@@ -1,0 +1,109 @@
+@model IEnumerable<Payment>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Payments";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Payments</h1>
+        <p class="page-subtitle">@Model.Count() payment record(s).</p>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="page-actions">
+            <a asp-action="calculations" class="btn btn-outline-secondary">📊 Insights</a>
+            <a asp-action="Create" class="btn btn-primary">➕ New Payment</a>
+        </div>
+    }
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--brand-100); color:var(--brand-600);">💳</div>
+            <div>
+                <div class="stat-value">@Model.Count()</div>
+                <div class="stat-label">Payments</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--info-100); color:var(--info-700);">📊</div>
+            <div>
+                <div class="stat-value">@(((decimal)ViewBag.AveragePayment).ToString("C"))</div>
+                <div class="stat-label">Average</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--warning-100); color:var(--warning-700);">⬆️</div>
+            <div>
+                <div class="stat-value">@(((decimal)ViewBag.MaximumPayment).ToString("C"))</div>
+                <div class="stat-label">Highest</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-body p-0">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon">💳</div>
+                <h5>No payments yet</h5>
+                <p class="mb-3">Record a payment against a rental to see it here.</p>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a asp-action="Create" class="btn btn-primary btn-sm">New Payment</a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Rental</th>
+                            <th>Amount</th>
+                            <th>With Fee (30%)</th>
+                            <th>Date</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(item.RentalId == 0 ? "—" : "#" + item.RentalId + (item.Rental?.Customer != null ? " · " + item.Rental.Customer.FirstName + " " + item.Rental.Customer.LastName : ""))</td>
+                                <td>@item.Amount.ToString("C")</td>
+                                <td>@((item.Amount + (item.Amount * 0.3m)).ToString("C"))</td>
+                                <td>@item.PaymentDate.ToString("dd MMM yyyy")</td>
+                                <td>@item.PaymentMethod</td>
+                                <td><partial name="_PaymentStatusBadge" model="item.PaymentStatus" /></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <a asp-action="Details" asp-route-id="@item.PaymentId" class="btn btn-outline-secondary btn-sm">View</a>
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.PaymentId" class="btn btn-outline-primary btn-sm">Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@item.PaymentId" class="btn btn-outline-danger btn-sm">Delete</a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

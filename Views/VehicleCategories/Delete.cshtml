@@ -1,0 +1,47 @@
+@model VehicleCategory
+
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Category</h1>
+        <p class="page-subtitle">This action cannot be undone.</p>
+    </div>
+</div>
+
+<div class="confirm-card">
+    <div class="section-card">
+        <div class="section-card-body">
+            <div class="alert alert-danger mb-4">
+                Are you sure you want to permanently delete "@Model.Name"?
+                @if (Model.Vehicles != null && Model.Vehicles.Count > 0)
+                {
+                    <div class="mt-1">This category still has @Model.Vehicles.Count vehicle(s) assigned to it.</div>
+                }
+            </div>
+            <div class="detail-list mb-4">
+                <div class="detail-item">
+                    <div class="detail-label">Name</div>
+                    <div class="detail-value">@Model.Name</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Type</div>
+                    <div class="detail-value">@Model.VehicleType</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Max Passengers</div>
+                    <div class="detail-value">@Model.MaxPassengers</div>
+                </div>
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="VehicleCategoryId" />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">Delete Permanently</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

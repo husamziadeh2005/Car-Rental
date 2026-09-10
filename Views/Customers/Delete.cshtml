@@ -1,0 +1,47 @@
+@model Customer
+
+@{
+    ViewData["Title"] = "Delete Customer";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Customer</h1>
+        <p class="page-subtitle">This action cannot be undone.</p>
+    </div>
+</div>
+
+<div class="confirm-card">
+    <div class="section-card">
+        <div class="section-card-body">
+            <div class="alert alert-danger mb-4">
+                Are you sure you want to permanently delete @Model.FirstName @Model.LastName?
+            </div>
+            <div class="detail-list mb-4">
+                <div class="detail-item">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">@Model.Email</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Phone</div>
+                    <div class="detail-value">@(Model.Phone ?? "—")</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Driver License #</div>
+                    <div class="detail-value">@Model.DriverLicenseNumber</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Date of Birth</div>
+                    <div class="detail-value">@Model.DateOfBirth.ToString("dd MMM yyyy")</div>
+                </div>
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="CustomerId" />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">Delete Permanently</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

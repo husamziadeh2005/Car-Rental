@@ -1,0 +1,85 @@
+﻿@model Vehicle
+@{
+    var type = Model.Category?.VehicleType.ToString() ?? "Economy";
+
+    // Palette of gradient pairs — picked deterministically per vehicle so each car looks distinct.
+    string[,] palettes = new string[,]
+    {
+        { "#3161f0", "#82abff" },
+        { "#0891b2", "#67e8f9" },
+        { "#7c3aed", "#c4b5fd" },
+        { "#dc2626", "#fca5a5" },
+        { "#d97706", "#fcd34d" },
+        { "#15803d", "#86efac" },
+        { "#be185d", "#f9a8d4" },
+        { "#0f172a", "#64748b" },
+    };
+    var seed = Math.Abs((Model.Brand + Model.Model).GetHashCode());
+    var idx = seed % (palettes.GetLength(0));
+    var colorA = palettes[idx, 0];
+    var colorB = palettes[idx, 1];
+    var gradId = "carGrad" + Model.VehicleId;
+}
+
+<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="@Model.Brand @Model.Model illustration" style="width:100%; height:100%; display:block;">
+    <defs>
+        <linearGradient id="@gradId" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="@colorA" stop-opacity="0.16" />
+            <stop offset="100%" stop-color="@colorB" stop-opacity="0.30" />
+        </linearGradient>
+    </defs>
+    <rect width="400" height="220" fill="url(#@gradId)" />
+
+    @switch (type)
+    {
+        case "Suv":
+            <g transform="translate(40,60)">
+                <path d="M10 110 Q10 90 35 88 L55 55 Q65 40 90 40 L230 40 Q250 40 262 55 L285 88 Q310 90 310 110 L310 128 Q310 138 298 138 L290 138 Q288 155 270 155 Q252 155 250 138 L90 138 Q88 155 70 155 Q52 155 50 138 L22 138 Q10 138 10 128 Z" fill="@colorA" opacity="0.9" />
+                <path d="M75 88 L95 58 Q100 52 110 52 L215 52 Q225 52 232 60 L250 88 Z" fill="#ffffff" opacity="0.35" />
+                <circle cx="80" cy="140" r="26" fill="#0f172a" /><circle cx="80" cy="140" r="11" fill="#cbd5e1" />
+                <circle cx="255" cy="140" r="26" fill="#0f172a" /><circle cx="255" cy="140" r="11" fill="#cbd5e1" />
+            </g>
+            break;
+
+        case "laxury":
+            <g transform="translate(30,70)">
+                <path d="M5 105 Q5 88 28 86 L60 60 Q75 42 105 42 L255 42 Q280 42 295 62 L325 86 Q345 88 345 105 L345 118 Q345 128 333 128 L322 128 Q320 146 300 146 Q280 146 278 128 L100 128 Q98 146 78 146 Q58 146 56 128 L17 128 Q5 128 5 118 Z" fill="@colorA" opacity="0.92" />
+                <path d="M85 86 L108 60 Q114 54 124 54 L235 54 Q244 54 250 61 L270 86 Z" fill="#ffffff" opacity="0.32" />
+                <circle cx="90" cy="130" r="24" fill="#0f172a" /><circle cx="90" cy="130" r="10" fill="#e2e8f0" />
+                <circle cx="290" cy="130" r="24" fill="#0f172a" /><circle cx="290" cy="130" r="10" fill="#e2e8f0" />
+                <rect x="30" y="98" width="300" height="4" rx="2" fill="#ffffff" opacity="0.25" />
+            </g>
+            break;
+
+        case "Van":
+            <g transform="translate(35,50)">
+                <path d="M8 120 Q8 60 45 58 L280 58 Q315 58 315 100 L315 130 Q315 140 303 140 L295 140 Q293 158 274 158 Q255 158 253 140 L100 140 Q98 158 79 158 Q60 158 58 140 L20 140 Q8 140 8 130 Z" fill="@colorA" opacity="0.9" />
+                <path d="M25 92 L25 68 Q25 62 32 62 L145 62 L145 92 Z" fill="#ffffff" opacity="0.3" />
+                <path d="M160 62 L270 62 Q285 62 292 76 L300 92 L160 92 Z" fill="#ffffff" opacity="0.22" />
+                <circle cx="88" cy="142" r="25" fill="#0f172a" /><circle cx="88" cy="142" r="10" fill="#cbd5e1" />
+                <circle cx="270" cy="142" r="25" fill="#0f172a" /><circle cx="270" cy="142" r="10" fill="#cbd5e1" />
+            </g>
+            break;
+
+        case "Sport":
+            <g transform="translate(30,95)">
+                <path d="M5 65 Q5 50 25 48 L60 30 Q80 18 115 18 L250 18 Q278 18 296 36 L330 50 Q350 52 350 68 L350 80 Q350 90 338 90 L326 90 Q324 106 306 106 Q288 106 286 90 L95 90 Q93 106 75 106 Q57 106 55 90 L17 90 Q5 90 5 80 Z" fill="@colorA" opacity="0.92" />
+                <path d="M95 48 L120 32 Q128 27 138 27 L228 27 Q240 27 248 35 L262 48 Z" fill="#ffffff" opacity="0.35" />
+                <circle cx="90" cy="92" r="22" fill="#0f172a" /><circle cx="90" cy="92" r="9" fill="#e2e8f0" />
+                <circle cx="300" cy="92" r="22" fill="#0f172a" /><circle cx="300" cy="92" r="9" fill="#e2e8f0" />
+                <rect x="30" y="60" width="290" height="3" rx="1.5" fill="#ffffff" opacity="0.3" />
+            </g>
+            break;
+
+        default:
+            <g transform="translate(35,75)">
+                <path d="M8 100 Q8 84 30 82 L55 55 Q68 40 95 40 L225 40 Q248 40 260 55 L285 82 Q307 84 307 100 L307 115 Q307 125 295 125 L286 125 Q284 142 265 142 Q246 142 244 125 L92 125 Q90 142 71 142 Q52 142 50 125 L20 125 Q8 125 8 115 Z" fill="@colorA" opacity="0.9" />
+                <path d="M78 82 L98 58 Q104 52 113 52 L207 52 Q215 52 221 59 L238 82 Z" fill="#ffffff" opacity="0.32" />
+                <circle cx="80" cy="127" r="23" fill="#0f172a" /><circle cx="80" cy="127" r="9" fill="#cbd5e1" />
+                <circle cx="256" cy="127" r="23" fill="#0f172a" /><circle cx="256" cy="127" r="9" fill="#cbd5e1" />
+            </g>
+            break;
+    }
+
+    <text x="20" y="205" font-family="sans-serif" font-size="15" font-weight="700" fill="#0f172a" opacity="0.55">@Model.Brand @Model.Model</text>
+</svg>

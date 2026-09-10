@@ -1,0 +1,80 @@
+@model IEnumerable<Rental>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Rentals";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Rentals</h1>
+        <p class="page-subtitle">@Model.Count() rental record(s).</p>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="page-actions">
+            <a asp-action="Create" class="btn btn-primary">➕ New Rental</a>
+        </div>
+    }
+</div>
+
+<div class="section-card">
+    <div class="section-card-body p-0">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon">📄</div>
+                <h5>No rentals yet</h5>
+                <p class="mb-3">Create a rental to book a vehicle for a customer.</p>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a asp-action="Create" class="btn btn-primary btn-sm">New Rental</a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>#@item.Id</td>
+                                <td>@(item.Customer != null ? item.Customer.FirstName + " " + item.Customer.LastName : "—")</td>
+                                <td>@(item.Vehicle != null ? item.Vehicle.Brand + " " + item.Vehicle.Model : "—")</td>
+                                <td>@item.StartDate.ToString("dd MMM yyyy")</td>
+                                <td>@item.EndDate.ToString("dd MMM yyyy")</td>
+                                <td>@item.TotalPrice.ToString("C")</td>
+                                <td><partial name="_RentalStatusBadge" model="item.Status" /></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">View</a>
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,98 @@
+@model IEnumerable<Vehicle>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Vehicles";
+    var sortBy = ViewData["SortBy"] as string ?? "none";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Vehicles</h1>
+        <p class="page-subtitle">Manage your fleet — @Model.Count() vehicle(s) total.</p>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="page-actions">
+            <a asp-action="Find" class="btn btn-outline-secondary">🔍 Search</a>
+            <a asp-action="Create" class="btn btn-primary">➕ Add Vehicle</a>
+        </div>
+    }
+</div>
+
+<div class="section-card">
+    <div class="section-card-body p-0">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon">🚘</div>
+                <h5>No vehicles yet</h5>
+                <p class="mb-3">Add your first vehicle to start building your fleet.</p>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a asp-action="Create" class="btn btn-primary btn-sm">Add Vehicle</a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>
+                                ID
+                                <a class="sort-link" asp-action="Index" asp-route-sortBy="vehicleid_asec" title="Sort ascending">▲</a>
+                                <a class="sort-link" asp-action="Index" asp-route-sortBy="vehicleid_desc" title="Sort descending">▼</a>
+                            </th>
+                            <th>Category</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>
+                                Year
+                                <a class="sort-link" asp-action="Index" asp-route-sortBy="year_asec" title="Sort ascending">▲</a>
+                                <a class="sort-link" asp-action="Index" asp-route-sortBy="year_desc" title="Sort descending">▼</a>
+                            </th>
+                            <th>Plate</th>
+                            <th>Daily Rate</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td style="width:56px;">
+                                    <div style="width:48px; height:36px; border-radius:6px; overflow:hidden;">
+                                        <partial name="_VehicleImage" model="item" />
+                                    </div>
+                                </td>
+                                <td>#@item.VehicleId</td>
+                                <td>@(item.Category?.Name ?? "—")</td>
+                                <td>@item.Brand</td>
+                                <td>@item.Model</td>
+                                <td>@item.Year</td>
+                                <td>@item.LicensePlate</td>
+                                <td>@item.DailyRate.ToString("C")</td>
+                                <td><partial name="_VehicleStatusBadge" model="item.VehicleType" /></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <a asp-action="Details" asp-route-id="@item.VehicleId" class="btn btn-outline-secondary btn-sm">View</a>
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.VehicleId" class="btn btn-outline-primary btn-sm">Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@item.VehicleId" class="btn btn-outline-danger btn-sm">Delete</a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

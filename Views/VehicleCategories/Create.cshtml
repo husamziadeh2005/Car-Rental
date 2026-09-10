@@ -1,0 +1,49 @@
+@model VehicleCategory
+
+@{
+    ViewData["Title"] = "New Category";
+}
+
+<div class="page-header">
+    <div>
+        <h1>New Vehicle Category</h1>
+        <p class="page-subtitle">Define a new class of vehicle.</p>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-grid">
+                <div>
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. Economy" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="VehicleType" class="form-label"></label>
+                    <select asp-for="VehicleType" class="form-select" asp-items="Html.GetEnumSelectList<EnumVehicleType>()"></select>
+                    <span asp-validation-for="VehicleType" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="MaxPassengers" class="form-label"></label>
+                    <input asp-for="MaxPassengers" class="form-control" placeholder="e.g. 5" />
+                    <span asp-validation-for="MaxPassengers" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Create Category</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

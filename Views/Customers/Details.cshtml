@@ -1,0 +1,42 @@
+@model Customer
+
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1>@Model.FirstName @Model.LastName</h1>
+        <p class="page-subtitle">Customer #@Model.CustomerId</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-outline-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-header">
+        <h2>Contact & Identification</h2>
+    </div>
+    <div class="section-card-body">
+        <div class="detail-list">
+            <div class="detail-item">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">@Model.Email</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Phone</div>
+                <div class="detail-value">@(Model.Phone ?? "—")</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Driver License Number</div>
+                <div class="detail-value">@Model.DriverLicenseNumber</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Date of Birth</div>
+                <div class="detail-value">@Model.DateOfBirth.ToString("dd MMM yyyy")</div>
+            </div>
+        </div>
+    </div>
+</div>

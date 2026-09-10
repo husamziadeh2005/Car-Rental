@@ -1,0 +1,83 @@
+﻿@using CarRentalPH.Models.ViewFind
+@model FindVehicle
+@{
+    ViewData["Title"] = "Find a Vehicle";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Find a Vehicle</h1>
+        <p class="page-subtitle">Search the fleet by ID or brand.</p>
+    </div>
+</div>
+
+<div class="section-card mb-4">
+    <div class="section-card-body">
+        <form asp-action="Find" method="post">
+            <div class="form-grid">
+                <div>
+                    <label asp-for="VehicleId" class="form-label"></label>
+                    <input asp-for="VehicleId" class="form-control" placeholder="e.g. 3" />
+                </div>
+                <div>
+                    <label asp-for="Brand" class="form-label"></label>
+                    <input asp-for="Brand" class="form-control" placeholder="e.g. Toyota" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">🔍 Search</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to Vehicles</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-header">
+        <h2>Results</h2>
+    </div>
+    <div class="section-card-body p-0">
+        @if (Model.Vehicles.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <h5>No results yet</h5>
+                <p class="mb-0">Enter an ID or brand above and press Search.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Daily Rate</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Vehicles)
+                        {
+                            <tr>
+                                <td>#@item.VehicleId</td>
+                                <td>@item.Brand</td>
+                                <td>@item.Model</td>
+                                <td>@item.DailyRate.ToString("C")</td>
+                                <td>
+                                    <div class="row-actions">
+                                        <a asp-action="Details" asp-route-id="@item.VehicleId" class="btn btn-outline-secondary btn-sm">View</a>
+                                        <a asp-action="Edit" asp-route-id="@item.VehicleId" class="btn btn-outline-primary btn-sm">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@item.VehicleId" class="btn btn-outline-danger btn-sm">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Vehicle>
+
+@{
+    ViewData["Title"] = "Our Cars";
+}
+
+<div class="page-hero">
+    <h1>Our Cars</h1>
+    <p>Choose from our best rental cars and enjoy a comfortable, reliable ride — from economy runabouts to luxury and sport models.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">🚘</div>
+        <h5>No cars available right now</h5>
+        <p class="mb-0">Please check back soon.</p>
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (Vehicle vehicle in Model)
+        {
+            <partial name="_VehicleCard" model="vehicle" />
+        }
+    </div>
+}

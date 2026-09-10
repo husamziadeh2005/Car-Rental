@@ -1,0 +1,78 @@
+@model VehicleCategory
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1>@Model.Name</h1>
+        <p class="page-subtitle">Vehicle category details</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Edit" asp-route-id="@Model.VehicleCategoryId" class="btn btn-outline-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+</div>
+
+<div class="section-card mb-3">
+    <div class="section-card-body">
+        <div class="detail-list">
+            <div class="detail-item">
+                <div class="detail-label">Name</div>
+                <div class="detail-value">@Model.Name</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Type</div>
+                <div class="detail-value">@Model.VehicleType</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Max Passengers</div>
+                <div class="detail-value">@Model.MaxPassengers</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-header">
+        <h2>Vehicles in this Category</h2>
+    </div>
+    <div class="section-card-body p-0">
+        @if (Model is null || Model.Vehicles is null || Model.Vehicles.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="empty-icon">🚘</div>
+                <h5>No vehicles in this category</h5>
+            </div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>License Plate</th>
+                            <th>Daily Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Vehicles)
+                        {
+                            <tr>
+                                <td>@item.Brand</td>
+                                <td>@item.Model</td>
+                                <td>@item.Year</td>
+                                <td>@item.LicensePlate</td>
+                                <td>@item.DailyRate.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

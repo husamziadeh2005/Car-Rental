@@ -1,0 +1,62 @@
+@model Payment
+
+@{
+    ViewData["Title"] = "Payment Details";
+    var fee = Model.Amount * 0.3m;
+    var total = Model.Amount + fee;
+}
+
+<div class="page-header">
+    <div>
+        <h1>Payment #@Model.PaymentId</h1>
+        <p class="page-subtitle">Rental #@Model.RentalId</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Edit" asp-route-id="@Model.PaymentId" class="btn btn-outline-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-header">
+        <h2>Payment Information</h2>
+        <partial name="_PaymentStatusBadge" model="Model.PaymentStatus" />
+    </div>
+    <div class="section-card-body">
+        <div class="detail-list">
+            <div class="detail-item">
+                <div class="detail-label">Rental</div>
+                <div class="detail-value">
+                    @if (Model.Rental != null)
+                    {
+                        @($"#{Model.Rental.Id} — {(Model.Rental.Customer != null ? Model.Rental.Customer.FirstName + " " + Model.Rental.Customer.LastName : "Customer")}")
+                    }
+                    else
+                    {
+                        @("#" + Model.RentalId)
+                    }
+                </div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Amount</div>
+                <div class="detail-value">@Model.Amount.ToString("C")</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Service Fee (30%)</div>
+                <div class="detail-value">@fee.ToString("C")</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Total Payment</div>
+                <div class="detail-value">@total.ToString("C")</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Payment Date</div>
+                <div class="detail-value">@Model.PaymentDate.ToString("dd MMM yyyy")</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Payment Method</div>
+                <div class="detail-value">@Model.PaymentMethod</div>
+            </div>
+        </div>
+    </div>
+</div>

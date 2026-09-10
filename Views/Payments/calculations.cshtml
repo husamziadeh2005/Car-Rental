@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Payment Insights";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Payment Insights</h1>
+        <p class="page-subtitle">A financial summary across all recorded payments (30% service fee applied).</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to Payments</a>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--brand-100); color:var(--brand-600);">💳</div>
+            <div>
+                <div class="stat-value">@ViewBag.TotalPayments</div>
+                <div class="stat-label">Total Payments</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--success-100); color:var(--success-700);">💰</div>
+            <div>
+                <div class="stat-value">@(((decimal)ViewBag.TotalRevenue).ToString("C"))</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--info-100); color:var(--info-700);">📊</div>
+            <div>
+                <div class="stat-value">@(((decimal)ViewBag.AveragePayment).ToString("C"))</div>
+                <div class="stat-label">Average Payment</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:var(--warning-100); color:var(--warning-700);">⬆️</div>
+            <div>
+                <div class="stat-value">@(((decimal)ViewBag.MaximumPayment).ToString("C"))</div>
+                <div class="stat-label">Maximum Payment</div>
+            </div>
+        </div>
+    </div>
+</div>

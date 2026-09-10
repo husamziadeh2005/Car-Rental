@@ -1,0 +1,47 @@
+@model Payment
+
+@{
+    ViewData["Title"] = "Delete Payment";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Payment</h1>
+        <p class="page-subtitle">This action cannot be undone.</p>
+    </div>
+</div>
+
+<div class="confirm-card">
+    <div class="section-card">
+        <div class="section-card-body">
+            <div class="alert alert-danger mb-4">
+                Are you sure you want to permanently delete payment #@Model.PaymentId?
+            </div>
+            <div class="detail-list mb-4">
+                <div class="detail-item">
+                    <div class="detail-label">Rental</div>
+                    <div class="detail-value">#@Model.RentalId</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Amount</div>
+                    <div class="detail-value">@Model.Amount.ToString("C")</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Method</div>
+                    <div class="detail-value">@Model.PaymentMethod</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Status</div>
+                    <div class="detail-value">@Model.PaymentStatus</div>
+                </div>
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="PaymentId" />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">Delete Permanently</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

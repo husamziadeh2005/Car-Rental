@@ -1,0 +1,76 @@
+@model IEnumerable<Customer>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Customers</h1>
+        <p class="page-subtitle">@Model.Count() registered customer(s).</p>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="page-actions">
+            <a asp-action="Create" class="btn btn-primary">➕ New Customer</a>
+        </div>
+    }
+</div>
+
+<div class="section-card">
+    <div class="section-card-body p-0">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <h5>No customers yet</h5>
+                <p class="mb-3">Register a customer to start creating rentals.</p>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a asp-action="Create" class="btn btn-primary btn-sm">New Customer</a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>License #</th>
+                            <th>Date of Birth</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.FirstName @item.LastName</td>
+                                <td>@item.Email</td>
+                                <td>@(item.Phone ?? "—")</td>
+                                <td>@item.DriverLicenseNumber</td>
+                                <td>@item.DateOfBirth.ToString("dd MMM yyyy")</td>
+                                <td>
+                                    <div class="row-actions">
+                                        <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-outline-secondary btn-sm">View</a>
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-outline-primary btn-sm">Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-outline-danger btn-sm">Delete</a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

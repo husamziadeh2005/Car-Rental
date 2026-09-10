@@ -1,0 +1,62 @@
+@model IEnumerable<VehicleCategory>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Vehicle Categories";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Vehicle Categories</h1>
+        <p class="page-subtitle">Group vehicles by class for pricing and search.</p>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="page-actions">
+            <a asp-action="Create" class="btn btn-primary">➕ New Category</a>
+        </div>
+    }
+</div>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="section-card">
+        <div class="empty-state">
+            <div class="empty-icon">🏷️</div>
+            <h5>No categories yet</h5>
+            <p class="mb-3">Create categories like Economy, SUV or Luxury to organize your fleet.</p>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a asp-action="Create" class="btn btn-primary btn-sm">New Category</a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-6 col-lg-4">
+                <div class="entity-card">
+                    <div class="entity-body">
+                        <h5 class="entity-title">@item.Name</h5>
+                        <div class="entity-meta">
+                            <span>Type: @item.VehicleType</span>
+                            <span>Max Passengers: @item.MaxPassengers</span>
+                        </div>
+                    </div>
+                    <div class="entity-footer">
+                        <a asp-action="Details" asp-route-id="@item.VehicleCategoryId" class="btn btn-outline-secondary btn-sm flex-fill">Details</a>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.VehicleCategoryId" class="btn btn-outline-primary btn-sm flex-fill">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.VehicleCategoryId" class="btn btn-outline-danger btn-sm flex-fill">Delete</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

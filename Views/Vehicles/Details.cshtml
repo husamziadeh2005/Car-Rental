@@ -1,0 +1,140 @@
+@model Vehicle
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Vehicle Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1>@Model.Brand @Model.Model</h1>
+        <p class="page-subtitle">Vehicle #@Model.VehicleId</p>
+    </div>
+
+    <div class="page-actions">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a asp-action="Edit"
+               asp-route-id="@Model.VehicleId"
+               class="btn btn-outline-primary">
+                Edit
+            </a>
+        }
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+            Back to List
+        </a>
+    </div>
+</div>
+
+
+<div class="section-card mb-3">
+    <div class="section-card-body p-0"
+         style="height:220px; overflow:hidden; border-radius:var(--radius-lg);">
+
+        <a asp-controller="Vehicles"
+           asp-action="Details"
+           asp-route-id="@Model.VehicleId">
+
+            @if (Model.Brand == "Toyota" && Model.Model == "Corolla")
+            {
+                <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/2024_Toyota_Corolla_LE.jpg"
+                     alt="Toyota Corolla"
+                     class="img-fluid w-100"
+                     style="height:220px; object-fit:cover;">
+            }
+            else if (Model.Brand == "Hyundai" && Model.Model == "Santa Fe")
+            {
+                <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/2025_Hyundai_Santa_Fe.jpg"
+                     alt="Hyundai Santa Fe"
+                     class="img-fluid w-100"
+                     style="height:220px; object-fit:cover;">
+            }
+            else if (Model.Brand == "BMW" && Model.Model == "520i")
+            {
+                <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/BMW_520i_(1).jpg"
+                     alt="BMW 520i"
+                     class="img-fluid w-100"
+                     style="height:220px; object-fit:cover;">
+            }
+            else if (Model.Brand == "Toyota" && Model.Model == "Hiace")
+            {
+                <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Toyota_Hiace_(48235305401).jpg"
+                     alt="Toyota Hiace"
+                     class="img-fluid w-100"
+                     style="height:220px; object-fit:cover;">
+            }
+            else if (Model.Brand == "Porsche" && Model.Model == "911")
+            {
+                <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Porsche_911.jpg"
+                     alt="Porsche 911"
+                     class="img-fluid w-100"
+                     style="height:220px; object-fit:cover;">
+            }
+
+        </a>
+
+    </div>
+</div>
+
+
+<div class="section-card">
+    <div class="section-card-header">
+        <h2>Vehicle Information</h2>
+
+        <partial name="_VehicleStatusBadge"
+                 model="Model.VehicleType" />
+    </div>
+
+    <div class="section-card-body">
+
+        <div class="detail-list">
+
+            <div class="detail-item">
+                <div class="detail-label">Category</div>
+                <div class="detail-value">
+                    @(Model.Category?.Name ?? "—")
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Brand</div>
+                <div class="detail-value">
+                    @Model.Brand
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Model</div>
+                <div class="detail-value">
+                    @Model.Model
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Year</div>
+                <div class="detail-value">
+                    @Model.Year
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">License Plate</div>
+                <div class="detail-value">
+                    @Model.LicensePlate
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Daily Rate</div>
+                <div class="detail-value">
+                    @Model.DailyRate.ToString("C")
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

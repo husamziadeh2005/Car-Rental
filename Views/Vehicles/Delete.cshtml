@@ -1,0 +1,51 @@
+@model Vehicle
+
+@{
+    ViewData["Title"] = "Delete Vehicle";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Vehicle</h1>
+        <p class="page-subtitle">This action cannot be undone.</p>
+    </div>
+</div>
+
+<div class="confirm-card">
+    <div class="section-card">
+        <div class="section-card-body">
+            <div class="alert alert-danger mb-4">
+                Are you sure you want to permanently delete this vehicle?
+            </div>
+            <div class="detail-list mb-4">
+                <div class="detail-item">
+                    <div class="detail-label">Category</div>
+                    <div class="detail-value">@(Model.Category?.Name ?? "—")</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Brand / Model</div>
+                    <div class="detail-value">@Model.Brand @Model.Model</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Year</div>
+                    <div class="detail-value">@Model.Year</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">License Plate</div>
+                    <div class="detail-value">@Model.LicensePlate</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Daily Rate</div>
+                    <div class="detail-value">@Model.DailyRate.ToString("C")</div>
+                </div>
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="VehicleId" />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">Delete Permanently</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

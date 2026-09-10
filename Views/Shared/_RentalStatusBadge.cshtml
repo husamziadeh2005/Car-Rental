@@ -1,0 +1,12 @@
+﻿@model CarRentalPH.Models.EnumRentalStatus
+@{
+    var cssClass = Model switch
+    {
+        CarRentalPH.Models.EnumRentalStatus.Active => "badge-info",
+        CarRentalPH.Models.EnumRentalStatus.Completed => "badge-success",
+        CarRentalPH.Models.EnumRentalStatus.Pending => "badge-warning",
+        CarRentalPH.Models.EnumRentalStatus.Cancelled => "badge-danger",
+        _ => "badge-neutral"
+    };
+}
+<span class="badge-status @cssClass">@Model</span>

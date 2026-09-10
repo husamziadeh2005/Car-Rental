@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CarRentalPH</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CarRentalPH.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-shell">
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        <aside class="app-sidebar" id="appSidebar">
+            <a class="brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <span class="brand-badge">🚗</span>
+                <span>GoWheels</span>
+            </a>
+            <nav>
+                <div class="nav-section-label">Overview</div>
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="icon">🏠</span> Dashboard
+                </a>
+
+                <div class="nav-section-label">Fleet</div>
+                <a class="nav-link" asp-area="" asp-controller="Vehicles" asp-action="Index">
+                    <span class="icon">🚘</span> Vehicles
+                </a>
+                <a class="nav-link" asp-area="" asp-controller="VehicleCategories" asp-action="Index">
+                    <span class="icon">🏷️</span> Categories
+                </a>
+                <a class="nav-link" asp-area="" asp-controller="Vehicles" asp-action="OurCars">
+                    <span class="icon">✨</span> Our Cars
+                </a>
+
+                <div class="nav-section-label">Operations</div>
+                <a class="nav-link" asp-area="" asp-controller="Rentals" asp-action="Index">
+                    <span class="icon">📄</span> Rentals
+                </a>
+                <a class="nav-link" asp-area="" asp-controller="Customers" asp-action="Index">
+                    <span class="icon">👥</span> Customers
+                </a>
+                <a class="nav-link" asp-area="" asp-controller="Payments" asp-action="Index">
+                    <span class="icon">💳</span> Payments
+                </a>
+                <a class="nav-link" asp-area="" asp-controller="Payments" asp-action="calculations">
+                    <span class="icon">📊</span> Payment Insights
+                </a>
+            </nav>
+            <div class="sidebar-footer">&copy; 2026 CarRentalPH</div>
+        </aside>
+
+        <div class="app-main">
+            <header class="app-topbar">
+                <div class="d-flex align-items-center gap-2">
+                    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle navigation">☰</button>
+                    <span class="page-title d-none d-sm-inline">@ViewData["Title"]</span>
+                </div>
+                <partial name="_LoginPartial" />
+            </header>
+
+            <main role="main" class="app-content">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success mb-3" role="alert">@TempData["SuccessMessage"]</div>
+                }
+                @RenderBody()
+            </main>
+
+            <footer class="app-footer">
+                &copy; 2026 - CarRentalPH - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

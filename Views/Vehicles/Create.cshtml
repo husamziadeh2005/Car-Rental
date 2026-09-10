@@ -1,0 +1,75 @@
+@model Vehicle
+
+@{
+    ViewData["Title"] = "Add Vehicle";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Add Vehicle</h1>
+        <p class="page-subtitle">Add a new vehicle to the fleet.</p>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-grid">
+                <div>
+                    <label asp-for="VehicleCategoryId" class="form-label"></label>
+                    <select asp-for="VehicleCategoryId" class="form-select" asp-items="ViewBag.Categories">
+                        <option value="">Select a category…</option>
+                    </select>
+                    <span asp-validation-for="VehicleCategoryId" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Brand" class="form-label"></label>
+                    <input asp-for="Brand" class="form-control" placeholder="e.g. Toyota" />
+                    <span asp-validation-for="Brand" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Model" class="form-label"></label>
+                    <input asp-for="Model" class="form-control" placeholder="e.g. Corolla" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Year" class="form-label"></label>
+                    <input asp-for="Year" class="form-control" placeholder="e.g. 2024" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="LicensePlate" class="form-label"></label>
+                    <input asp-for="LicensePlate" class="form-control" placeholder="e.g. 10-12345" />
+                    <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="DailyRate" class="form-label"></label>
+                    <input asp-for="DailyRate" class="form-control" placeholder="e.g. 45" />
+                    <span asp-validation-for="DailyRate" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="VehicleType" class="form-label"></label>
+                    <select asp-for="VehicleType" class="form-select" asp-items="Html.GetEnumSelectList<EnumVehicleStatus>()"></select>
+                    <span asp-validation-for="VehicleType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Create Vehicle</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

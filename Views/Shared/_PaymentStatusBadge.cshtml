@@ -1,0 +1,13 @@
+﻿@model string
+@{
+    var normalized = (Model ?? "").Trim().ToLower();
+    var cssClass = normalized switch
+    {
+        "paid" => "badge-success",
+        "pending" => "badge-warning",
+        "failed" => "badge-danger",
+        "refunded" => "badge-info",
+        _ => "badge-neutral"
+    };
+}
+<span class="badge-status @cssClass">@Model</span>

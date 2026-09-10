@@ -1,0 +1,32 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="confirm-card">
+    <div class="section-card">
+        <div class="section-card-body text-center">
+            <div class="empty-icon mb-2">⚠️</div>
+            <h1 class="mb-1">Something went wrong</h1>
+            <p class="page-subtitle mb-4">An error occurred while processing your request.</p>
+
+            @if (Model.ShowRequestId)
+            {
+                <p class="mb-4"><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+            }
+
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Dashboard</a>
+
+            <hr class="my-4" />
+
+            <p class="text-start text-body-secondary small mb-1">
+                Swapping to <strong>Development</strong> environment will display more detailed information about the error.
+            </p>
+            <p class="text-start text-body-secondary small mb-0">
+                <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
+                It can expose sensitive exception details to end users. For local debugging, set
+                <strong>ASPNETCORE_ENVIRONMENT</strong> to <strong>Development</strong> and restart the app.
+            </p>
+        </div>
+    </div>
+</div>

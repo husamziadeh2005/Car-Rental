@@ -1,0 +1,81 @@
+@model Rental
+
+@{
+    ViewData["Title"] = "Rental Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Rental #@Model.Id</h1>
+        <p class="page-subtitle">@(Model.Customer != null ? Model.Customer.FirstName + " " + Model.Customer.LastName : "—") · @(Model.Vehicle != null ? Model.Vehicle.Brand + " " + Model.Vehicle.Model : "—")</p>
+    </div>
+    <div class="page-actions">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+</div>
+
+<div class="section-card mb-3">
+    <div class="section-card-header">
+        <h2>Rental Information</h2>
+        <partial name="_RentalStatusBadge" model="Model.Status" />
+    </div>
+    <div class="section-card-body">
+        <div class="detail-list">
+            <div class="detail-item">
+                <div class="detail-label">Customer</div>
+                <div class="detail-value">@(Model.Customer != null ? Model.Customer.FirstName + " " + Model.Customer.LastName : "Customer #" + Model.CustomerId)</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Vehicle</div>
+                <div class="detail-value">@(Model.Vehicle != null ? Model.Vehicle.Brand + " " + Model.Vehicle.Model : "Vehicle #" + Model.VehicleId)</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Start Date</div>
+                <div class="detail-value">@Model.StartDate.ToString("dd MMM yyyy")</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">End Date</div>
+                <div class="detail-value">@Model.EndDate.ToString("dd MMM yyyy")</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Total Price</div>
+                <div class="detail-value">@Model.TotalPrice.ToString("C")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Payments != null && Model.Payments.Any())
+{
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2>Payments</h2>
+        </div>
+        <div class="section-card-body p-0">
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Payments)
+                        {
+                            <tr>
+                                <td>@p.PaymentDate.ToString("dd MMM yyyy")</td>
+                                <td>@p.Amount.ToString("C")</td>
+                                <td>@p.PaymentMethod</td>
+                                <td><partial name="_PaymentStatusBadge" model="p.PaymentStatus" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

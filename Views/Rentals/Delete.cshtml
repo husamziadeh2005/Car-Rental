@@ -1,0 +1,47 @@
+@model Rental
+
+@{
+    ViewData["Title"] = "Delete Rental";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Rental</h1>
+        <p class="page-subtitle">This action cannot be undone.</p>
+    </div>
+</div>
+
+<div class="confirm-card">
+    <div class="section-card">
+        <div class="section-card-body">
+            <div class="alert alert-danger mb-4">
+                Are you sure you want to permanently delete rental #@Model.Id?
+            </div>
+            <div class="detail-list mb-4">
+                <div class="detail-item">
+                    <div class="detail-label">Customer</div>
+                    <div class="detail-value">@(Model.Customer != null ? Model.Customer.FirstName + " " + Model.Customer.LastName : "Customer #" + Model.CustomerId)</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Vehicle</div>
+                    <div class="detail-value">@(Model.Vehicle != null ? Model.Vehicle.Brand + " " + Model.Vehicle.Model : "Vehicle #" + Model.VehicleId)</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Dates</div>
+                    <div class="detail-value">@Model.StartDate.ToString("dd MMM yyyy") – @Model.EndDate.ToString("dd MMM yyyy")</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Total Price</div>
+                    <div class="detail-value">@Model.TotalPrice.ToString("C")</div>
+                </div>
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">Delete Permanently</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
