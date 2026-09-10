@@ -131,23 +131,6 @@ Then open the URL printed in the console (e.g. `https://localhost:5001`).
 
 The app uses ASP.NET Core Identity. Register a new account from the **Register** page to access protected admin actions (create/edit/delete). Browsing vehicles, categories, and the "Our Cars" page is available without logging in.
 
----
-
-## 📸 Screenshots
-
-> Add screenshots of the dashboard, Our Cars page, and a CRUD form here.
-
----
-
-## 📌 Roadmap Ideas
-
-- Real vehicle photo uploads
-- Online booking flow for customers (self-service, not just admin CRUD)
-- Email notifications for rental confirmations
-- Rental availability calendar / conflict checking
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License — feel free to use it as a learning reference or starting point.
